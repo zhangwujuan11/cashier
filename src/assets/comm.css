@@ -1,0 +1,78 @@
+
+body,html{
+	background-color: #EBEBEB;
+	height: 100vh;
+	overflow: hidden;
+	overflow-y: scroll;
+	color: #515151;
+	}
+*{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	touch-action: auto;
+	scrollbar-width: none; /* firefox */
+	-ms-overflow-style: none; /* IE 10+ */
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	-webkit-tap-highlight-color: transparent
+}
+*::-webkit-scrollbar {
+     display: none;
+}
+
+input,select{
+	background:none;
+	outline:none;
+	appearance:none;
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	border:none;
+}
+input:focus {
+	background: none;
+}
+:deep(.el-table--fit){
+	padding-bottom: 1.6rem;
+}
+.datable{
+	padding-bottom: 1.6rem;
+}
+.el-pagination{
+	text-align: center;
+}
+.el-date-range-picker{
+	width: 100% !important;
+}
+.el-date-range-picker .el-picker-panel__body{
+	width: 100%;
+}
+.el-date-range-picker__content{
+	width: 40%;
+	padding:0;
+}
+.el-date-range-picker table{
+	width: 100%;
+}
+.el-date-range-picker__header div{
+	font-size: 10px;
+}
+
+.el-message-box{
+	margin-top: 60px !important;
+}
+
+.information{
+		width:8.8rem;
+		background-color: white;
+		border-radius: 0.266667rem;
+		padding:0.32rem 0.4rem 0.48rem 0.4rem;
+		font-size: 0.426667rem;
+		display: flex;
+		justify-content: space-between;
+		margin-top: 0.533333rem;
+		box-sizing: border-box;
+		flex-wrap: wrap;
+	}
+.el-scrollbar .el-scrollbar__bar {
+      opacity: 1 !important;
+ }
