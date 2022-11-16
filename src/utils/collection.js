@@ -50,11 +50,19 @@ export function refund(data){
  }
  
  // 公众号加服务窗
-export function  showqrcode(data){
+//存singnature
+export function setsingernature(data){
 	return axios({
-		url:'https://api-mop.chinaums.com/v1/netpay/webpay/pay',
+		url:'https://1to2to3.cn/coupon_java/mergerPay/id',
+		method:'post',
+		data
+	})
+}
+//取value 银联支付
+export function valuesing(data){
+	return axios({
+		url:'https://1to2to3.cn/coupon_java/mergerPay/id/value',
 		method:'get',
-		params:data.body,
-		headers:{'authorization':'OPEN-FORM-PARAM'}
+		params:{'id':data}
 	})
 }

@@ -148,7 +148,7 @@
 					this.code = code;
 				}
 				let time = year + month + day + hour + minute + this.code
-				import('@qians/gen_header/gen_header.js').then((res) => {
+				import('@wenjingq/gen_header/gen_header.js').then((res) => {
 					refund({
 						body: {
 							"merchantCode": n.merchantCode, 

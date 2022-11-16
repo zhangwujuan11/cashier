@@ -104,13 +104,13 @@
 		},
 	created(){
 			// 临时数据
-			// this.$router.push({
-			// 	query:{
-			// 		"adminUsername":'k42806', 
-			// 		"orgId":"11111", 
-			// 		"token":'b0ce855f-94f5-4a8d-8170-50cfbe26f28a'
-			// 	}
-			// })
+			this.$router.push({
+				query:{
+					"adminUsername":'k42806', 
+					"orgId":"11111", 
+					"token":'eaa327d3-e55b-4e65-b644-ac714297c02f'
+				}
+			})
 		
 		 
 			

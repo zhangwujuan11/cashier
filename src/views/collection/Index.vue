@@ -4,14 +4,6 @@
 			<div class="maretitle">
 				<img @click="goback" src="@/assets/images/back2.png" alt="">
 				银联收款通道
-				<!-- <el-dropdown>
-					<span class="el-dropdown-link">
-				  <img class="more" src="@/assets/images/morewhite.png" alt="">
-					</span> -->
-				<!-- <el-dropdown-menu slot="dropdown">
-						<el-dropdown-item @click.native="toEnter">扫一扫</el-dropdown-item>
-					</el-dropdown-menu> -->
-				<!-- </el-dropdown> -->
 			</div>
 		</div>
 		<div class="contenbox">
@@ -27,7 +19,7 @@
 </template>
 
 <script>
-	import {showpaycode,transactionquery,showqrcode,innterinfo} from '@/utils/collection.js'
+	import {showpaycode,transactionquery,innterinfo,setsingernature,valuesing} from '@/utils/collection.js'
 	import QRCode from 'qrcodejs2'
 	export default {
 		data() {
@@ -39,11 +31,19 @@
 				codedd:'',
 				times:'',
 				qrshow:true,
-				text:"http://www.baidu.com"
+				text:""
 			}
 		},
 		components: {},
 		mounted() {
+			
+			if(this.$route.query.singid != undefined){
+				valuesing(this.$route.query.singid).then(res=>{
+					 window.location.href='https://test-api-open.chinaums.com/v1/netpay/webpay/pay?authorization=' + res.data.data
+				}).catch(()=>{
+					this.$message.error('二维码过期')
+				})
+			}
 			this.ip = returnCitySN.cip
 
 		},
@@ -78,93 +78,97 @@
 				          inputPattern: /^(0|([1-9]\d{0,6}))(\.\d{1,2})?$/,
 				          inputErrorMessage: '金额格式不正确',
 						  }).then(({ value }) => {
+							let code=''
+							//设置随机字符
+							let random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+							for (var i = 0; i < 4; i++) {
+								  var index = Math.floor(Math.random() * 9);
+								  code += random[index];
+								  this.codedd= code ;
+							}
+				          	let year = (new Date().getFullYear()).toString();
+				          	let month = (new Date().getMonth() + 1).toString();
+				          	let day = (new Date().getDate()).toString();
+				          	let hour = (new Date().getHours()).toString();
+				          	let minute = (new Date().getMinutes()).toString();
+							let seconds =( new Date().getSeconds()).toString();
+							if(month.length == 1){
+							month = "0" + month
+							}
+							if(day.length ==1){
+								day = "0" + day
+							}
+							if(hour.length == 1){
+								hour = "0" + hour
+							}
+							if(minute.length == 1){
+								minute = "0" + minute
+							}
+							if(seconds.length == 1){
+								seconds = "0" + seconds
+							}
+				          	let time =year + month + day + hour + minute + this.codedd
+							this.times=year + month + day + hour + minute + seconds
+							// 32位随机数
+							let arr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+							let num = "";
+							for(var e = 0; e < 32; e++) {
+								num += arr[parseInt(Math.random() * 36)];
+							}
 							
-							  
-							  
-							// let code=''
-							// //设置随机字符
-							// let random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-							// for (var i = 0; i < 4; i++) {
-							// 	  var index = Math.floor(Math.random() * 9);
-							// 	  code += random[index];
-							// 	  this.codedd= code ;
-							// }
-				   //        	let year = (new Date().getFullYear()).toString();
-				   //        	let month = (new Date().getMonth() + 1).toString();
-				   //        	let day = (new Date().getDate()).toString();
-				   //        	let hour = (new Date().getHours()).toString();
-				   //        	let minute = (new Date().getMinutes()).toString();
-							// let seconds =( new Date().getSeconds()).toString();
-							// if(month.length == 1){
-							// month = "0" + month
-							// }
-							// if(day.length ==1){
-							// 	day = "0" + day
-							// }
-							// if(hour.length == 1){
-							// 	hour = "0" + hour
-							// }
-							// if(minute.length == 1){
-							// 	minute = "0" + minute
-							// }
-							// if(seconds.length == 1){
-							// 	seconds = "0" + seconds
-							// }
-				   //        	let time =year + month + day + hour + minute + this.codedd
-							// this.times=year + month + day + hour + minute + seconds
-							// // 32位随机数
-							// let arr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-							// num = "";
-							// for(var e = 0; e < 32; e++) {
-							// 	num += arr[parseInt(Math.random() * 36)];
-							// }
-				   //        	showqrcode({
-							// 	"appId":'8a81c1be831e62880183c6537f4d1bc8',
-							// 	"timestamp":this.times,
-							// 	"nonce":num,
-							// 	"content":{
-							// 	"requestTimestamp":this.formatDate(new Date(),"yyyy-MM-dd hh:mm:ss"),
-							// 	"merOrderId":time,
-							// 	"mid":"89835015331APS9", //商户号需要配置,先固定
-							// 	"tid": "Z58UTR15", //终端号
-							// 	"instMid":'YUEDANDEFAULT',
-							// 	"totalAmount": value * 100//支付总 金额
-							// 	},
-				   //        	}).then(data=>{
-				   //        		console.log(data.data)
+						import('@wenjingq/gen_header/gen_header.js').then((ress)=>{
+							let contents={
+								"mid":"898340149000005", //商户号需要配置,先固定
+								"tid": "88880001", //终端号
+								"totalAmount": value * 100,
+								"requestTimestamp":this.formatDate(new Date(),"yyyy-MM-dd HH:mm:ss"),
+								"merOrderId":'1017' + time,
+								"instMid":'QRPAYDEFAULT',
+								"attachedData":'测试',//商户附加数据
+								"notifyUrl":'http://1.117.41.70:9003/ums/cb/notifyUrl',//支付结果通知地址\
+								"srcReserve":'111',//请求系统预留字段
+								"orderDesc":'测试',//账单描述
+								"platformAmount":0,
+								"originalAmount":value * 100,//订单原始金额
+								}
+							let signature=ress.Signature.get_open_form_param(
+								"10037e6f6823b20801682b6a5e5a0006",
+								"1c4e3b16066244ae9b236a09e5b312e8",
+								this.times,
+								num,
+								JSON.stringify(contents)
+								)
 								
-							// 	// // 二维码
-							// 	 new QRCode("qrcode", {
-							// 	        width: 150,
-							// 	        height: 150,
-							// 	        text: "http://www.baidu.com", // 二维码内容
-							// 	        render: "canvas", // 设置渲染方式（有两种方式 table和canvas，默认是canvas）
-							// 	        colorDark: "#000", // 背景色
-							// 	        colorLight: "#fff", // 前景色
-							// 	      })
-								
-								
-				   //        	})
-				   
-				   
-				   
-				   
-				   
+							// 存signature
+							let singid=''
+							for (var i = 0; i < 6; i++) {
+								  var index = Math.floor(Math.random() * 9);
+								  singid += random[index];
+							}
+							console.log(singid)
+							setsingernature({
+								id:singid,
+								signStr:signature
+							})
+							
 				   
 				   // 二维码
+				   document.getElementById('qrcode').innerHTML=''
 				    new QRCode("qrcode", {
-				           text:this.text, // 二维码内容
+				           text:window.location.href + '?singid=' + singid, // 二维码内容
 				           render: "canvas", // 设置渲染方式（有两种方式 table和canvas，默认是canvas）
 				           colorDark: "#000", // 背景色
-				           colorLight: "#fff", // 前景色
+				           colorLight: "#fff"// 前景色
 				         })
 						this.qrshow=false
+						
 				        }).catch(() => {
 				          this.$message({
 				            type: 'info',
 				            message: '取消输入'
 				          });       
 				        });
+						})
 			},
 			// 扫客户
 			toEnter() {
@@ -203,7 +207,7 @@
 							this.code = code;
 						}
 						let time = year + month + day + hour + minute + this.code
-						import('@qians/gen_header/gen_header.js').then((ress) => {
+						import('@wenjingq/gen_header/gen_header.js').then((ress) => {
 							showpaycode({
 								body: {
 									"merchantCode": "89835015331APS9", //商户号需要配置,先固定
@@ -217,7 +221,7 @@
 									"transactionCurrencyCode": '156',
 									"ip":returnCitySN.cip
 								},
-								header: ress.get_open_body_sig(
+								header: ress.Signature.get_open_body_sig(
 									"8a81c1be831e62880183c6537f4d1bc8",
 									"31cce8efd439471b9badc07468137224",
 									JSON.stringify({
