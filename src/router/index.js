@@ -11,42 +11,22 @@ VueRouter.prototype.push = function push(location) {
 	return originalPush.call(this, location).catch(err => err)
 }
 
-const routes = [{
-		path: "/administr",
-		children: [{
-				path: "/",
-				name: 'index',
-				component: () => import("../views/administer/Index.vue")
-			},
-			{
-				path: "/administr/member",
-				name: 'member',
-				component: () => import("../views/administer/Member.vue")
-			},
-		],
-		component: Home,
-	},
-	{
-		path: "/",
-		redirect: '/administr'
-	},
-	{
-		path: '/collection/index',
-		component: {
-			render: (e) => e("router-view")
-		},
-		children: [{
-				path: '',
-				name: 'collection',
-				component: () => import('@/views/collection/Index.vue'),
-			},
-			{
-				path: '/collection/collectoeder',
-				name: 'collectionoeder',
-				component: () => import('@/views/collection/Collectoeder.vue')
-			}
-		]
-	},
+const routes = [
+	// {
+	// 	path: "/administr",
+	// 	children: [{
+	// 			path: "/",
+	// 			name: 'index',
+	// 			component: () => import("../views/administer/Index.vue")
+	// 		},
+	// 		{
+	// 			path: "/administr/member",
+	// 			name: 'member',
+	// 			component: () => import("../views/administer/Member.vue")
+	// 		},
+	// 	],
+	// 	component: Home,
+	// },
 	{
 		path: '/home',
 		component: {
@@ -66,6 +46,27 @@ const routes = [{
 				path: "/tableconfiguration",
 				name: 'tableconfiguration',
 				component: () => import("@/views/Homeh/Tableconfiguration.vue")
+			}
+		]
+	},
+	{
+		path: "/",
+		redirect: '/home'
+	},
+	{
+		path: '/collection/index',
+		component: {
+			render: (e) => e("router-view")
+		},
+		children: [{
+				path: '',
+				name: 'collection',
+				component: () => import('@/views/collection/Index.vue'),
+			},
+			{
+				path: '/collection/collectoeder',
+				name: 'collectionoeder',
+				component: () => import('@/views/collection/Collectoeder.vue')
 			}
 		]
 	},
@@ -226,7 +227,18 @@ const routes = [{
 				component: () => import("@/views/operator/Newrole.vue")
 			}
 		]
-	}
+	},
+	// 顶顶收银商户信息录入
+	{
+		  path:'/nesindex',
+		  name:'nesindex',
+		  component:()=>import('@/views/ddreset/Table.vue')
+	},
+	{
+		  path:'/reset',
+		  name:'reset',
+		  component:()=>import('@/views/ddreset/Reset.vue')
+	},
 ]
 
 const router = new VueRouter({

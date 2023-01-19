@@ -79,9 +79,6 @@
 	import Control from '@/components/management/Control.vue'
 	import {iToken} from '@/utils/home.js'
 	import {authorities,isinfodata,sheapply,interyunshan} from '@/utils/login.js'
-	// import { get_open_body_sig } from '@qians/gen_header/gen_header.js'
-	
-	
 	//插件
 	export default{
 		inject:["reload"],
@@ -94,25 +91,16 @@
 				isadmin:1,
 				phoneheight:localStorage.getItem('phonetopheight'),
 				baseform:{
-						"username":'',
-						"org_id":'',
-						"nickname": "",
-						"role_id":'',
-						"status": 1,
-					}
+					"username":'',
+					"org_id":'',
+					"nickname": "",
+					"role_id":'',
+					"status": 1,
+				}
 			}
 		},
 	created(){
 			// 临时数据
-			this.$router.push({
-				query:{
-					"adminUsername":'k42806', 
-					"orgId":"11111", 
-					"token":'eaa327d3-e55b-4e65-b644-ac714297c02f'
-				}
-			})
-		
-		 
 			
 			
 			localStorage.setItem('userinfo',JSON.stringify(this.$route.query))
@@ -124,10 +112,9 @@
 						"username":res.data.name
 					}).then(data=>{
 						isinfodata({
-							 "username": res.data.name,
+							"username": res.data.name,
 							"orgId":this.$route.query.orgId, 
 						}).then(info=>{
-							// console.log(info.data.data.type)
 							if(info.data.data.type == 'USER'){
 								this.isadmin=1
 							}else{
@@ -142,7 +129,6 @@
 		},
 		methods:{
 			goMember(){
-				// console.log(this.isadmin )
 				if(this.isadmin == 1){
 					this.$router.push('/administr/member')
 				}else{
@@ -150,7 +136,6 @@
 						name:'nodata'
 					})
 				}
-				
 			},
 			goRole(){
 				if(this.isadmin == 1){
@@ -170,7 +155,6 @@
 			},
 			goDevice(){
 			},
-		
 			// 申请激活状态
 			goapplyBtn(){
 				sheapply({

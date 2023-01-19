@@ -83,8 +83,192 @@ export function sheapply(data){
 // 进入云商
 export function interyunshan(data){
 	return axios({
-		url:'https://1to2to3.cn/operate/mgr/sysUsers/cloudEnter',
+		url:'https://1to2to3.cn/merchant/mer/sysUsers/cloudEnter',
 		method:'post',
 		data
 	})
 }
+
+
+// 顶顶支付商户信息录入
+// levitas查
+export function levitas(data) {
+	return axios({
+		url: 'https://1to2to3.cn/rds2/service/query',
+		method: 'post',
+		data: {
+			"auth": 2,
+			"project": "umsPay",
+			"table": "pay_mch_info",
+			"conditions": {
+				"fields": [],
+				"query": {
+					"and": [{
+						"match": {
+							"id": data
+						}
+					}]
+				}
+
+			}
+		}
+	})
+}
+// 查询cb
+export function levitastid(data) {
+	return axios({
+		url: 'https://1to2to3.cn/rds2/service/query',
+		method: 'post',
+		data: {
+			"auth": 2,
+			"project": "umsPay",
+			"table": "pay_mch_info",
+			"conditions": {
+				"fields": [],
+				"query": {
+					"and": [{
+						"match": {
+							"tid": data.tid,
+							"username":data.username
+						}
+					}]
+				}
+
+			}
+		}
+	})
+}
+// 查询商户对应的渠道是否有未删除的数据
+export function levitastidd(data) {
+	return axios({
+		url: 'https://1to2to3.cn/rds2/service/query',
+		method: 'post',
+		data: {
+			"auth": 2,
+			"project": "umsPay",
+			"table": "pay_mch_info",
+			"conditions": {
+				"fields": [],
+				"query": {
+					"and": [{
+						"match": {
+							"channelId": data.channelId,
+							"username":data.username,
+							"isDel":0
+						}
+					}]
+				}
+
+			}
+		}
+	})
+}
+
+//新写
+export function levcreat(data) {
+	return axios({
+		url: 'https://1to2to3.cn/rds2/service/create',
+		method: 'post',
+		data: {
+			"auth": 2,
+			"project": "umsPay",
+			"table": "pay_mch_info",
+			"data": [data]
+		}
+	})
+}
+//修改
+export function resetlevtas(data){
+	return axios({
+		url:'https://1to2to3.cn/rds2/service/update-by-query',
+		method:'post',
+		data:{
+				"auth": 2,
+				"project": "umsPay",
+				"table": "pay_mch_info",
+				"query": {
+					"and": [
+						{
+							"match": {
+								"username": data.username,
+								"channelId": data.channelId
+								},
+						}
+					]
+				},
+				"data": data
+			}
+	})
+}
+
+
+//是否商户信息mid/tid储存
+// export function mchpay_info(data){
+// 	return axios({
+// 		url:'https://1to2to3.cn/rds2/service/query',
+// 		method:'post',
+// 		data: {
+// 			"auth": 2,
+// 			"project": "umsPay",
+// 			"table": "pay_mch_info_t",
+// 			"conditions": {
+// 				"fields": [],
+// 				"query": {
+// 					"and": [{
+// 						"match": {
+// 							"username": data
+// 						}
+// 					}]
+// 				}
+		
+// 			}
+// 		}
+// 	})
+// }
+//储存绑定商户信息表2
+// export function mchpay_infoinit(data){
+// 	return axios({
+// 		url:'https://1to2to3.cn/rds2/service/create',
+// 		method:'post',
+// 		data: {
+// 			"auth": 2,
+// 			"project": "umsPay",
+// 			"table": "pay_mch_info_t",
+// 			"data": [data]
+// 		}
+// 	})
+// }
+
+	// 修改绑定商户信息表2
+	// export function mchpay_infoset(data){
+	// 	return axios({
+	// 		url:'https://1to2to3.cn/rds2/service/update-by-query',
+	// 		method:'post',
+	// 		data:{
+	// 				"auth": 2,
+	// 				"project": "umsPay",
+	// 				"table": "pay_mch_info_t",
+	// 				"query": {
+	// 					"and": [
+	// 						{"match": {"username": data.username}}
+	// 					]
+	// 				},
+	// 				"data": data
+	// 			}
+	// 	})
+	// }
+	
+// 音箱修改
+export function tctcset(data){
+		return axios({
+			url:'https://1to2to3.cn/rds2/service/set',
+			method:'post',
+			data: {
+				"auth": 2,
+				"project": "umsPay",
+				"table": "mch_tc_info",
+				 "id": data.id,
+				"data": data
+			}
+		})
+	}

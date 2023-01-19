@@ -1,7 +1,8 @@
 <template>
-  <div class="home" @touchstart.capture="touchStart" @touchend.capture="touchEnd">
-	  <Solttitle></Solttitle>
-	  <Saidmenu></Saidmenu>
+  <div class="home">
+	  <!-- @touchstart.capture="touchStart" @touchend.capture="touchEnd" -->
+	  <Solttitle  :username="username"></Solttitle>
+	  <!-- <Saidmenu></Saidmenu> -->
    <!-- <div class="information">
    	<div class="informationLeft">
 		<img src="@/assets/images/ellipse.png">
@@ -11,7 +12,7 @@
 		<img @click="goinformation" class="diandian" src="@/assets/images/diandiandain.png">
 	</router-link>
    </div> -->
-   <Homelinechart></Homelinechart> 
+   <Homelinechart  ref="child"></Homelinechart> 
    <Oldmenu></Oldmenu>
    <div class="viewheight information">
 	   <div>
@@ -35,82 +36,245 @@
 	  <Paydata></Paydata>
   <router-view></router-view>
   <Foot></Foot>
+  
+  <!-- 商户信息录入 -->
+  <!-- <Mchinfo v-if="dialogVisible"></Mchinfo> -->
+	
+	
+	
+	
+    <!-- <vue-qr v-if="!sshoww" :logoSrc="imageUrl" :text="qrurl" :size="300"></vue-qr> -->
+  	<div class="tableform">
+  	  <!-- <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+  		  <el-form-item label="商户名" prop="mchName">
+  		    <el-input  v-model="ruleForm.mchName" placeholder="输入商户名"></el-input>
+  		  </el-form-item>
+  		  <el-form-item label="码牌ID" prop="id">
+  		    <el-input v-model="ruleForm.id" placeholder="输入码牌ID"></el-input>
+  		  </el-form-item>
+  	    <el-form-item label="商户号" prop="mid">
+  	      <el-input v-model="ruleForm.mid" placeholder="输入商户号"></el-input>
+  	    </el-form-item>
+  		<el-form-item label="终端号" prop="tid">
+  		  <el-input v-model="ruleForm.tid" placeholder="输入终端号"></el-input>
+  		</el-form-item>
+  		<el-form-item label="商户LOGO" prop="mchLogo">
+  		  <el-input v-model="ruleForm.mchLogo"></el-input>
+  		</el-form-item>
+  		<p class="borderline"></p>
+  		<el-form-item label="支付倒计时(s)" prop="expireTime">
+  		  <el-input v-model="ruleForm.expireTime" type="number"></el-input>
+  		</el-form-item>
+  		<el-form-item
+  		    v-for="(deviceId, index) in ruleForm.deviceIds"
+  		    :label="'音响ID' + (index + 1)"
+  		    :key="deviceId.index"
+  			:prop="'deviceIds.' + index + '.value'"
+  			class="additem"
+  		  >
+  		   <p class="seridpbox">
+  			   <el-input v-model="deviceId.value"></el-input>
+  			   <el-button @click.prevent="removeDomain(deviceId)">删除</el-button>
+  		   </p> 
+  		</el-form-item>
+  		  <p style="width: 100%;text-align: center;margin-bottom: 15px;color: #409EFF;font-size: 14px;" @click="addDomain">
+  			 <i class="el-icon-plus"></i> 新增音响ID
+  		  </p>
+  		  <el-form-item label="支付后通知">
+  		  	<el-checkbox-group v-model="ruleForm.payNotifySelect">
+  		  	    <el-checkbox label="1">氢信公众号通知</el-checkbox>
+  				<el-checkbox label="2">氢信企业版机器人</el-checkbox>
+  		  	    <el-checkbox label="3">商户短信通知</el-checkbox>
+  		  	</el-checkbox-group>
+  		  </el-form-item>
+  		  <el-form-item v-if="telshow" label="接收短信手机">
+  		  	<el-input  v-model="ruleForm.phone"  placeholder="输入手机号"></el-input>
+  		  </el-form-item>
+  		  <el-form-item class="bottmtext" label="支付前的页面底部定义">
+  		  	<el-checkbox-group v-model="beforetext">
+  		  	    <el-checkbox label="1">附加文本</el-checkbox>
+  		  	</el-checkbox-group>
+  		  </el-form-item>
+  		  <el-input style="margin-bottom: 10px;" placeholder="输入文本" v-if="beforetext == '1'" v-model="ruleForm.payBeforeText" ></el-input>
+  		  <el-form-item label="支付中">
+  		  	<el-checkbox-group style="text-align: right;" v-model="ruleForm.isPayFailNotify">
+  		  	    <el-checkbox label="true">支付失败提醒</el-checkbox>
+  		  	</el-checkbox-group>
+  		  </el-form-item>
+  		  <p class="borderline"></p>
+  		  <img class="kuakejishu" src="@/assets/images/kuakejishu.png" alt="">
+  		   <p class="borderline"></p>
+  		   <p class="kuakejishubox">
+  			    <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+  		   </p>
+  		   <p class="borderline"></p>
+  	  </el-form> -->
+  	</div>
+  </div>
+  
   </div>
 </template>
 
 <script>
 import Solttitle from '@/components/Solttitle.vue'
-import Saidmenu from '@/components/Index.vue'
+// import Saidmenu from '@/components/Index.vue'
 import Homelinechart from '@/components/homeh/Homelinechart.vue'
 import Oldmenu from '@/components/homeh/Oldmenu.vue'
 import Foot from '@/components/Foot.vue'
 import Paydata from '@/components/homeh/Paydata.vue'
+// import Mchinfo from '@/components/homeh/Mchinfo.vue'
 
 
 import { payAmountWeek,numCount,isAdmin } from '@/utils/home.js'
+import {authorities,isinfodata,sheapply,interyunshan} from '@/utils/login.js'
+import {iToken} from '@/utils/home.js'
 export default {
 	inject:["reload"],
   name: 'Home',
   components: {
-	 Saidmenu,
+	 // Saidmenu,
 	 Solttitle,
 	 Homelinechart,
 	 Oldmenu,
 	 Foot,
-	 Paydata
+	 Paydata,
+	 // Mchinfo
   },
   data(){
 	  return {
+		  echartdata:false,
 		  homedata:{
 			  todayAmount:'',
 			  todayPayCount:''
 		  },
 		  numCount:{},
-		  username:JSON.parse(localStorage.getItem('username')),
-		  isAdmin:''
+		  username:"",
+		  isAdmin:'',
+		  dialogVisible:false,
+		  rulFrom:{
+			 "merchantCode":'',
+			 "terminalCode":'',
+			 "mid":'',
+			 "tid":''
+		  },
+		 rules: {
+			merchantCode: [
+			  { required: true, message: '请输入商户号',  trigger: 'blur'  }
+			],
+			terminalCode: [
+			  { required: true, message: '请输入终端号',  trigger: 'blur'  }
+			],
+			mid: [
+			  { required: true, message: '请输入商户号',  trigger: 'blur'  }
+			],
+			tid: [
+			  { required: true, message: '请输入终端号',  trigger: 'blur'  }
+			],
 		  }
+	  }
   },
   created() {
-	payAmountWeek().then(res=>{
-		this.homedata=res.data.data
-	})
-	numCount().then(res=>{
-		this.numCount=res.data.data
-	})
-	isAdmin().then(res=>{
-		if(res.data.data.isAdmin==0){
-			this.isAdmin='普通成员'
-		}else if(res.data.data.isAdmin==1){
-			this.isAdmin='超级管理员'
-		}
-	})
+	  // 临时数据
+	  // this.$router.push({
+	  // 	query:{
+	  // 		"adminUsername":'admin123', 
+	  // 		"orgId":"68479875", 
+	  // 		"token":'bc490415-2d97-4e5f-98a3-7a022a0eb4bc'
+	  // 	}
+	  // })
+	 localStorage.setItem('userinfo',JSON.stringify(this.$route.query))
+	 authorities(this.$route.query.token).then(res=>{
+	 		localStorage.setItem('username',JSON.stringify(res.data.name))
+			this.username=res.data.name
+			// 进入云商
+	 		interyunshan({
+	 			"adminUsername":this.$route.query.adminUsername,
+	 			"orgId":this.$route.query.orgId, 
+	 			"username":res.data.name,
+	 		}).then(data=>{
+				// 是否储存商户信息，mid,tid……
+				// mchpay_info(res.data.name).then(mcn_info=>{
+				// 	if(mcn_info.data.data.length == 0){
+				// 		this.dialogVisible=true
+				// 	}else{
+				// 		// console.log(mcn_info.data.data[0])
+				// 		localStorage.setItem("mchtiddata",JSON.stringify(mcn_info.data.data[0]))
+				// 		this.dialogVisible=false
+				// 	}
+				// })
+	 			// isinfodata({
+	 			// 	"username": res.data.name,
+	 			// 	"orgId":this.$route.query.orgId, 
+	 			// }).then(info=>{
+	 			// 	if(info.data.data.type == 'USER'){
+	 			// 		this.isadmin=1
+	 			// 	}else{
+	 			// 		this.isadmin=info.data.data.data.activationState
+	 			// 	}
+	 				
+	 			// })
+				iToken().then(res=>{
+					localStorage.setItem('iToken',JSON.stringify(res.data.data.iToken))
+					// 图标数据加载
+					this.$refs.child.changeRecent(6);
+					payAmountWeek().then(ress=>{
+						this.homedata=ress.data.data
+					})
+					numCount().then(resss=>{
+						this.numCount=resss.data.data
+					})
+				})
+	 		})
+	 	}) 
+	
+	// isAdmin().then(res=>{
+	// 	if(res.data.data.isAdmin==0){
+	// 		this.isAdmin='普通成员'
+	// 	}else if(res.data.data.isAdmin==1){
+	// 		this.isAdmin='超级管理员'
+	// 	}
+	// })
   },
   methods:{
-	  goinformation(){
-		  this.$router.push({name:'information'})
-	  },
-	//滑动开始
-	touchStart(e) {
-	  // 记录初始位置
-	  this.startX = e.touches[0].clientX;
+	goinformation(){
+		this.$router.push({name:'information'})
 	},
-	//滑动结束
-	touchEnd(e) {
-	  // 当前滑动的父级元素
-	  let parentElement = e.currentTarget.parentElement;
-	  // 记录结束位置
-	  this.endX = e.changedTouches[0].clientX;
-	  // 右滑大于30距离删除出现
-	  if ( this.startX - this.endX < -100) {
-		this.$store.state.menushow =true
-		parentElement.dataset.type = 0;
-	  }else{
-		  this.$store.state.menushow = false
+	mchinfo(){
+		console.log(456789)
+		this.dialogVisible=true
+	},
+	//滑动开始
+	// touchStart(e) {
+	//   // 记录初始位置
+	//   this.startX = e.touches[0].clientX;
+	// },
+	// //滑动结束
+	// touchEnd(e) {
+	//   // 当前滑动的父级元素
+	//   let parentElement = e.currentTarget.parentElement;
+	//   // 记录结束位置
+	//   this.endX = e.changedTouches[0].clientX;
+	//   // 右滑大于30距离删除出现
+	//   if ( this.startX - this.endX < -100) {
+	// 	this.$store.state.menushow =true
+	// 	parentElement.dataset.type = 0;
+	//   }else{
+	// 	  this.$store.state.menushow = false
+	//   }
+	//   this.startX = 0;
+	//   this.endX = 0;
+	// },
+	mchinfo(formName){
+		this.$refs[formName].validate((valid) => {
+		  if (valid) {
+			alert('submit!');
+		  } else {
+			console.log('error submit!!');
+			return false;
+		  }
+		});
 	  }
-	  this.startX = 0;
-	  this.endX = 0;
-	}
-	  
+	
   }
 }
 </script>
@@ -185,5 +349,9 @@ export default {
 	}
 	.viewheight div p{
 		text-align: center;
+	}
+	.chenpp{
+		margin-bottom: 10px;
+		margin-top: 10px;
 	}
 </style>

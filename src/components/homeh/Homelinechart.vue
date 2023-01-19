@@ -44,7 +44,11 @@
 	    },
 		 mounted(){
 				// 默认显示7天柱状图数据
-				this.changeRecent(6)
+				
+				//  this.$nextTick(()=> {
+				//     this.$on('childmethods', this.changeRecent(6))
+				// })
+				// this.changeRecent(6)
 		    },
 		    methods: {
 				//初始化echarts
@@ -156,6 +160,7 @@
 				},
 				// 日期选择
 				changeRecent(value) {
+					// console.log(1111111111111111)
 				         let fmt = moment().subtract(value, 'days').format('YYYY-MM-DD');
 						 let taday = moment().format("YYYY-MM-DD")
 						 let arr=[]

@@ -25,7 +25,6 @@ export function collectorder(data){
 		url:'https://1to2to3.cn/rds2/service/query',
 		method:'post',
 		data
-		
 	})
 }
 

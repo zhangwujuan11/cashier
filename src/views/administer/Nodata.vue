@@ -29,7 +29,7 @@
 	}
 	.nodataCon{
 		width: 8.88rem;
-		display:flex;
+		display: flex;
 		justify-content: center;
 		flex-direction: column;
 		padding-top: 0.8rem;

@@ -4,24 +4,30 @@
 			<i class="el-icon-arrow-left"></i>
 			银联订单中心
 		</div>
-		<ul class="biggestBox">
-			<li class="information li_vessel" v-for="(item,index) in tableData" :key="index" @click='oederinfo(index)'>
-				<div style="width: 100%;">
-					<p>
-						<strong>订单ID：</strong>{{item.merchantOrderId}}
-					</p>
-					<p>
-						<strong>订单金额：</strong> ￥{{item.amount | amount}}
-					</p>
-					<!-- <p>
-					<strong>状态：</strong> <span :class="[item.state==1 ? 'greecolor':'redcolor']">{{item.state | state}}</span>
-				</p> -->
-					<p style="display: flex;justify-content: space-between;">
-						<span><strong>交易日期：</strong>{{item.transactionDateWithYear}}-{{item.transactionTime}} </span>
-					</p>
-				</div>
-			</li>
-		</ul>
+	    <el-tabs v-model="activeName">
+			<el-tab-pane label="B扫C" name="first">
+				<ul class="biggestBox">
+					<li class="information li_vessel" v-for="(item,index) in tableData" :key="index" @click='oederinfo(index)'>
+						<div style="width: 100%;">
+							<p>
+								<strong>订单ID：</strong>{{item.merchantOrderId}}
+							</p>
+							<p>
+								<strong>订单金额：</strong> ￥{{item.amount | amount}}
+							</p>
+							<!-- <p>
+							<strong>状态：</strong> <span :class="[item.state==1 ? 'greecolor':'redcolor']">{{item.state | state}}</span>
+						</p> -->
+							<p style="display: flex;justify-content: space-between;">
+								<span><strong>交易日期：</strong>{{item.transactionDateWithYear}}-{{item.transactionTime}} </span>
+							</p>
+						</div>
+					</li>
+				</ul>
+			</el-tab-pane>
+			<el-tab-pane label="C扫B" name="second"></el-tab-pane>
+	    </el-tabs>
+		
 
 		<!-- 蒙尘 -->
 		<el-dialog title="订单详情" append-to-body :visible.sync="dialogVisible" width="98%">
@@ -86,7 +92,8 @@
 				tableData: [],
 				dialogVisible: false,
 				orderinfo:{},
-				code:''
+				code:'',
+				activeName: 'first'
 			}
 		},
 		mounted() {
@@ -103,7 +110,7 @@
 						"query": {
 							 "and": [{
 			                    "match": {
-									"merchantCode":"123456789900081"
+									"merchantCode":JSON.parse(localStorage.getItem("mchtiddata")).merchantCode
 								}
 					        }]
 						}
@@ -148,16 +155,17 @@
 					this.code = code;
 				}
 				let time = year + month + day + hour + minute + this.code
-				import('@wenjingq/gen_header/gen_header.js').then((res) => {
+				import('@wenjingq/gen_header/gen_header.js').then((ress)=>{
 					refund({
 						body: {
 							"merchantCode": n.merchantCode, 
 							"terminalCode":n.terminalCode,
 							"merchantOrderId":n.merchantOrderId,
 							"refundRequestId":time,
+							"originalOrderId":n.originalOrderId,
 							"transactionAmount":n.transactionAmount
 						},
-						header: res.get_open_body_sig(
+						header: ress.Signature.get_open_body_sig(
 							"8a81c1be831e62880183c6537f4d1bc8",
 							"31cce8efd439471b9badc07468137224",
 							JSON.stringify({
@@ -165,6 +173,7 @@
 								"terminalCode":n.terminalCode,
 								"merchantOrderId":n.merchantOrderId,
 								"refundRequestId":time,
+								"originalOrderId":n.originalOrderId,
 								"transactionAmount":n.transactionAmount
 							}))
 					}).then(data => {
@@ -173,6 +182,7 @@
 						console.log(err)
 					})
 				})
+				console.log(n)
 			}
 		},
 		watch: {}
@@ -210,7 +220,6 @@
 		background-color: white;
 		line-height: 0.933333rem;
 		text-indent: 0.266667rem;
-		margin-bottom: 0.4rem;
 	}
 	
 	/* 蒙尘 */
@@ -286,5 +295,14 @@
 	.btn{
 		width: 100%;
 		text-align: center;
+	}
+	/* tab */
+	/deep/.el-tabs__nav{
+		width: 100% !important;
+	}
+	/deep/.el-tabs__item{
+		width: 50%;
+		text-align: center;
+		background-color: white;
 	}
 </style>

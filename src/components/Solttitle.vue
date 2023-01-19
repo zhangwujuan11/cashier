@@ -5,10 +5,10 @@
 				<img @click="gohomePage" src="@/assets/images/close.png" alt="">
 				<span>买单宝</span>
 			</div>
-			<div class="usertab" @click="downcontrol">
+			<div @click="mchinfo" class="usertab">
 				<img class="Ellipse" src="@/assets/images/ellipse.png" alt="">
 				<span>{{username}}商户</span>
-				<img class="down" src="@/assets/images/down.png" alt="">
+				<!-- <img  @click="downcontrol" class="down" src="@/assets/images/down.png" alt="">
 				<div class="downshow" v-if="downshow">
 					<p @click="goaccount">
 						<i class="el-icon-setting"></i>
@@ -18,18 +18,18 @@
 						<i class="el-icon-switch-button"></i>
 						退出登录
 					</p>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>
 </template>
 <script>
 	export default{
+		props:["username"],
 		data(){
 			return{
 				downshow:false,
 				phoneheight:localStorage.getItem('phonetopheight'),
-				username:JSON.parse(localStorage.getItem('username'))
 			}
 		},
 		methods:{
@@ -44,11 +44,15 @@
 			},
 			// 返回
 			gohomePage(){
-			   this.$router.push('/')
+			   window.flutter_inappwebview.callHandler('jsBack') 
 			},
 			reload(){
 				 window.location.reload();
+			},
+			mchinfo(){
+				this.$router.push('/nesindex')
 			}
+			
 		}
 	}
 </script>
