@@ -7,6 +7,7 @@
 		<!-- 人员分类列表 -->
 		<div class="classification">
 			<div class="classificationCon">
+				
 				<p @click="datalist=1,apptips='成员列表'">
 					<span>组织成员</span>
 					<span>{{ahgg.length}}</span>
